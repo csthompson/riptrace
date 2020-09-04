@@ -22,6 +22,8 @@ func main() {
 	profileHandler := handlers.ProfileHandler{NatsClient: &natsClient}
 	natsClient.RegisterTopicHandler("profile.get", profileHandler.Get)
 
+	//TODO: Add handlers to attach a delve process. Can we embed delve as a package?
+
 	result := types.Profile{}
 	natsClient.Request("profile.get", nil, &result)
 
