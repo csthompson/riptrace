@@ -27,8 +27,6 @@ func New(pid int) (*Debugger, error) {
 	debugger := Debugger{
 		Delve: d,
 	}
-
-	log.Info("Successfully Attached to PID: ", debugger.Delve.ProcessPid())
 	return &debugger, nil
 }
 

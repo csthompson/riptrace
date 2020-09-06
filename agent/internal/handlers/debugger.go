@@ -18,6 +18,8 @@ const (
 	TRACE_PUBLISHER = "TRACE_PUBLISHER"
 )
 
+//Send a signal to all active publishers to shutdown
+// Detatch the debugger
 func (self *DebuggerHandler) Shutdown() {
 	for _, p := range self.Publishers {
 		p.Shutdown()
@@ -25,20 +27,24 @@ func (self *DebuggerHandler) Shutdown() {
 	self.Debugger.Shutdown()
 }
 
-func (self *DebuggerHandler) Attach(subj string, reply string, msg interface{}) {
+func (self *DebuggerHandler) Attach(subj string, reply string, msg int) {
 	log.Info("Handling debugger attach request")
-	pidReq, ok := msg.(float64)
-	if !ok {
-		log.Error("PID must numeric")
+
+	//First check to see if we have an active debugger
+	if self.Debugger != nil {
+		log.Info("Active riptrace process already running")
 		return
 	}
-	pid := int(pidReq)
+
+	pid := msg
 
 	d, err := debugger.New(pid)
 	if err != nil {
 		log.Error("Error initiating riptrace on PID ", pid, " : ", err)
 		return
 	}
+
+	log.Info("Successfully Attached to PID: ", d.Delve.ProcessPid())
 
 	self.Debugger = d
 
