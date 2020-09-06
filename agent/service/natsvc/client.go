@@ -21,7 +21,7 @@ func GetClient(url string) NatsClient {
 }
 
 //Register a handler
-func (self *NatsClient) RegisterTopicHandler(topic string, handler func(string, string, interface{})) {
+func (self *NatsClient) RegisterTopicHandler(topic string, handler interface{}) {
 	self.Client.Subscribe(topic, handler)
 }
 
@@ -30,5 +30,5 @@ func (self *NatsClient) Publish(topic string, msg interface{}) {
 }
 
 func (self *NatsClient) Request(topic string, msg interface{}, result interface{}) error {
-	return self.Client.Request(topic, msg, &result, 1*time.Second)
+	return self.Client.Request(topic, msg, &result, 30*time.Second)
 }

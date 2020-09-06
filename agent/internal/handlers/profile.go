@@ -12,6 +12,7 @@ type ProfileHandler struct {
 }
 
 func (self *ProfileHandler) Get(subj string, reply string, m interface{}) {
+	log.Info("Handling get profile request")
 	profile, err := inspect.Inspect()
 	if err != nil {
 		log.Error("Error retrieving profile ", err)
